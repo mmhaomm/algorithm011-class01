@@ -1,0 +1,84 @@
+
+//暴力搜索
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int size = height.size();
+        int ans =0;
+        for(int i =1;i<size-1;i++){
+            int leftmax =0,rightmax =0;
+            for(int j=i;j>=0;j--){
+                leftmax=max(leftmax,height[j]);
+            }
+            for(int j=i;j<size;j++){
+                rightmax=max(rightmax,height[j]);
+            }
+            ans += min(leftmax,rightmax)-height[i];
+        }
+        return ans;
+    }
+};
+//动态编程
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int size = height.size();
+        int ans =0;
+        if(size == 0)
+		    return 0;
+        vector<int>leftmax(size),rightmax(size);
+        leftmax[0] = height[0];
+        for(int j=1;j<size;j++){
+            leftmax[j]=max(leftmax[j-1],height[j]);
+        }
+        rightmax[size-1]=height[size-1];
+        for(int j=size-2;j>=0;j--){
+            rightmax[j]=max(rightmax[j+1],height[j]);
+        }
+        for(int i=1;i<size-1;i++)
+            ans += min(leftmax[i],rightmax[i])-height[i];
+        
+        return ans;
+    }
+};
+//方法 3：栈的应用
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        
+        int ans =0;
+        stack<int> st;
+        for(int i =0;i<height.size();i++){
+            while(!st.empty()&& height[st.top()]<height[i]){
+                int cur = st.top();
+                st.pop();
+                if(st.empty()) break;
+                int l=st.top();
+                int r=i;
+                int h = min(height[l],height[r])-height[cur];    
+                ans+=(r-l-1)*h;
+            }
+            st.push(i);
+        }
+        
+        return ans;
+    }
+};
+//双指针
+int trap(vector<int>& height)
+{
+    int left = 0, right = height.size() - 1;
+    int ans = 0;
+    int left_max = 0, right_max = 0;
+    while (left < right) {
+        if (height[left] < height[right]) {
+            height[left] >= left_max ? (left_max = height[left]) : ans += (left_max - height[left]);
+            ++left;
+        }
+        else {
+            height[right] >= right_max ? (right_max = height[right]) : ans += (right_max - height[right]);
+            --right;
+        }
+    }
+    return ans;
+}
