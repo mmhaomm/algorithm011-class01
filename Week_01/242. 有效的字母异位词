@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.size()!=t.size()) return false;
+        int hash[26]={0};
+        for (char i:s) {
+            hash[i-'a']++;
+        }
+        for (char i:t) {
+            hash[i-'a']--;
+        }
+        for (char i:s) {
+            if (hash[i-'a']!=0) return false;
+        }
+        return true;
+    }
+};
