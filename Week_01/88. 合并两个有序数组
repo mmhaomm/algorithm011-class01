@@ -1,0 +1,33 @@
+//错误版本
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int last = nums1.size()-1;
+        m--;
+        n--;
+        while (m>=0) {
+            while (n>=0 && nums1[m]<nums2[n]){
+                swap(nums1[last--],nums2[n--]); 
+            }
+            swap(nums1[last--],nums1[m--]);
+        }
+    }
+};
+//关于m和n谁在外面的循环，短的数组先结束，所以短的应该是内循环，可为什么正确的是外循环
+//正确版本
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int last = nums1.size()-1;
+        m--;
+        n--;
+        while (n>=0) {
+            while (m>=0 && nums1[m]>nums2[n]){
+
+                swap(nums1[last--],nums1[m--]);
+
+            }
+            swap(nums1[last--],nums2[n--]); 
+        }
+    }
+};
