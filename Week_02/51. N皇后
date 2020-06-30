@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string> > ans;
+        vector<string>nQueen(n,string(n,'.'));
+        solveNQueens(ans,nQueen,0,n);
+        return ans;       
+    }
+private:
+    void solveNQueens (vector<vector<string>> &ans,vector<string>&nQueen,int row,int &n) {
+        if (row==n) {
+            ans.push_back(nQueen);
+            return;
+        }
+        for (int col = 0; col < n; col++) {
+            if (isValid(nQueen, row, col, n)) {
+                nQueen[row][col]='Q';
+                solveNQueens(ans, nQueen, row+1, n);
+                nQueen[row][col]='.';
+            }
+        }
+    }
+    bool isValid (vector<string>&nQueen,int row,int col,int& n) {
+        for (int i=0;i<row;i++)
+            if (nQueen[i][col]=='Q')
+                return false;
+        for (int i=row-1,j=col-1; i>=0 && j>=0 ;i--,j--) 
+             if (nQueen[i][j]=='Q')
+                return false;
+        for (int i=row-1,j=col+1; i>=0 && j<n ;i--,j++) 
+             if (nQueen[i][j]=='Q')
+                return false;       
+        return true;
+    
+    }
+};
