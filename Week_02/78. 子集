@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int> >ans;
+        vector<int> path;
+        int level=0;
+        DFS(nums,path,level,ans);
+        return ans;
+    }
+    void DFS(vector<int>&nums,vector<int>&path,int level,vector<vector<int>>&ans) {
+        ans.push_back(path);
+        for (int i=level;i<nums.size();i++) {
+            path.push_back(nums[i]);
+            DFS(nums,path,i+1,ans);
+            path.pop_back();
+        }
+    }
+};
