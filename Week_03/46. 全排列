@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>>ans;
+        int index = 0;
+        DFS(ans, nums, index);
+        return ans;
+    }
+    void DFS(vector<vector<int>>& ans, vector<int>& nums, int index) {
+        if (index == nums.size()) {
+            ans.push_back(nums);
+            return;
+        } 
+        for (int i = index; i < nums.size(); i++) {
+            swap(nums[i], nums[index]);
+            DFS(ans, nums, index + 1);
+            swap(nums[i], nums[index]);
+        }
+
+    }
+};
