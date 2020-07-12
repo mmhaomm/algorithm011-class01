@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<vector<int>>ans;
+    vector<vector<int>> combine(int n, int k) {
+        vector<int>path;
+        int index = 1;
+        DFS(index, path, n, k);
+        return ans;
+    }
+    void DFS(int index, vector<int>& path, int n, int k) {
+        if (path.size() == k) {
+            ans.push_back(path);
+            return;
+        }
+        for (int i = index; i <= n - (k - path.size()) + 1; i++) {
+            path.push_back(i);
+            DFS(i + 1, path, n, k);
+            path.pop_back();
+        }
+    }
+};
