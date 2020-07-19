@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        unordered_set<string>dict(wordList.begin(), wordList.end());
+        queue<string> line;
+        int ans = 1;
+        line.push(beginWord);
+        while (!line.empty()) {
+            int n = line.size();
+            while (n--) {
+                string tmp = line.front();
+                line.pop();
+                if (tmp == endWord) return ans;
+                dict.erase(tmp);
+                for (int i = 0; i < tmp.size(); i++) {
+                    char letter = tmp[i];
+                    for (int j = 0; j < 26; j++) {
+                        tmp[i] = 'a' + j;
+                        if (dict.find(tmp) != dict.end()) {
+                            line.push(tmp);
+                            dict.erase(tmp);
+                        } 
+                    }
+                     tmp[i] = letter;
+                }
+            }
+            ans++;
+        }
+        return 0;
+    }
+};
