@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+        int m = board.size();
+        int n = board[0].size();
+        int row = click[0], col = click[1];
+        if (board[row][col] == 'M' || board[row][col] == 'X') {
+            board[row][col] = 'X';
+            return board;
+        }
+        vector<vector<int>> dicts = {{0,1}, {0,-1}, {1,0},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
+        int nums = 0;
+        for (auto dict : dicts) {
+            int newRow = row + dict[0];
+            int newCol = col + dict[1];
+            if (newCol >= 0 && newRow >= 0 && newRow < m && newCol < n && board[newRow][newCol] == 'M') nums++;
+        }
+        if (nums > 0) {
+            board[row][col] = nums + '0';
+            return board;
+        }
+        board[row][col] = 'B';
+        for (auto dict : dicts) {
+            int newRow = row + dict[0];
+            int newCol = col + dict[1];
+            if (newCol >= 0 && newRow >= 0 && newRow < m && newCol < n && board[newRow][newCol] == 'E') {
+                vector<int> nextClick = {newRow, newCol};
+                updateBoard(board, nextClick);
+            }
+        }       
+        return board;
+    }
+};
