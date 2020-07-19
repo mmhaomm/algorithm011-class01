@@ -1,0 +1,51 @@
+class Solution {
+public:
+    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+        vector<vector<string>> ans;
+        vector<string>path;
+        unordered_set<string>dict(wordList.begin(), wordList.end()), current, next;
+        unordered_map<string, vector<string>> child;
+        if (dict.find(endWord) == dict.end()) return {};
+        current.insert(beginWord);
+        path.push_back(beginWord);
+        while (true) {
+            for (string word : current)
+                dict.erase(word);
+            for (string word : current)
+                findChildren(word, next, dict, child);
+            if (next.empty()) break;
+            if (next.find(endWord) != next.end()){
+                genladder(beginWord, endWord, child, path, ans);
+                break;
+            }
+            current.clear();
+            swap(current, next);
+
+        }
+        return ans;
+    }
+    void findChildren(string word, unordered_set<string>& next, unordered_set<string>& dict, unordered_map<string, vector<string>>& child ) {
+        string parent = word;
+        for (int i = 0; i < parent.size(); i++) {
+            char letter = parent[i];
+            for (int j = 0; j < 26; j++) {
+                parent[i] = 'a' + j;
+                if (dict.find(parent) != dict.end()) {
+                    next.insert(parent);
+                    child[word].push_back(parent);
+                }
+            }
+            parent[i] = letter; 
+        }
+    }
+    void genladder(string beginWord, string endWord, unordered_map<string, vector<string>>& child, vector<string>& path, vector<vector<string>>& ans) {
+        if (beginWord == endWord) ans.push_back(path);
+        else {
+            for (string children : child[beginWord]) {
+                path.push_back(children);
+                genladder(children, endWord, child, path, ans);
+                path.pop_back();
+            }
+        }
+    }
+};
