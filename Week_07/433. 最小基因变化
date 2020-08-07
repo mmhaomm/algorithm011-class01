@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int minMutation(string start, string end, vector<string>& bank) {
+        unordered_set<string> dict(bank.begin(), bank.end()), head, tail;
+        if (!dict.count(end)) return -1;
+        int ans = 0;
+        head.insert(start);
+        tail.insert(end);
+        while (!head.empty() && !tail.empty()) {
+            if (head.size() > tail.size()) {
+                swap(head, tail);
+            }
+            ans++;
+            unordered_set<string> tmp ;
+            for (auto s : head) {
+                string word = s;
+                for (int i = 0; i < word.size(); i++) {
+                    char letter = word[i];
+                    for (auto g : string("ATGC")) {
+                        word[i] = g;
+                        if (tail.find(word) != tail.end())
+                            return ans;
+                        if (dict.find(word) != dict.end()) {
+                            tmp.insert(word);
+                            dict.erase(word);
+                        }
+                    }
+                    word[i] = letter; 
+                }
+            }
+            swap(head, tmp);
+        }
+        return -1;
+    }
+};
