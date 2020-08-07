@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int climbStairs(int n) {
+        vector<int>ans(n + 1, 0);
+        return DFS(ans, n);
+    }
+    int DFS(vector<int>&ans, int n) {
+        if (n < 3) return n;
+        if (ans[n] > 0) return ans[n];
+        int result = DFS(ans, n - 1) + DFS(ans, n - 2);
+        ans[n] = result;
+        return result;
+    }
+};
