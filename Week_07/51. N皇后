@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<int>f(5 * n - 2, 1);
+        vector<vector<string>> ans;
+        vector<string>nQueens(n, string(n, '.'));
+        DFS(ans, nQueens, f, 0, n);
+        return ans;
+    }
+    void DFS(vector<vector<string>>& ans, vector<string>& nQueens, vector<int>& f, int row, int& n) {
+        if (row == n) {
+            ans.push_back(nQueens);
+            return;
+        } 
+        for (int col = 0; col < n; col++) {
+            if (f[col] && f[n + row + col] && f[4 * n - 2 + row - col]) {
+                f[col] = f[n + row + col] = f[4 * n - 2 + row - col] = 0;
+                nQueens[row][col] = 'Q';
+                DFS(ans, nQueens, f, row + 1, n);
+                nQueens[row][col] = '.';
+                f[col] = f[n + row + col] = f[4 * n - 2 + row - col] = 1;
+            }
+        }
+
+    }
+};
