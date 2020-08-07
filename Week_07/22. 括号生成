@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        if (n == 0) return {""};
+        if (n == 1) return {"()"};
+        vector<vector<string>>ans(n + 1);
+        ans[0] = {""};
+        ans[1] = {"()"};
+        for (int i = 2; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                for (string l : ans[j]) {
+                    for(string r : ans[i - j - 1]) {
+                        string str = "(" + l + ")" + r;
+                        ans[i].push_back(str);
+                    }
+                }
+            }
+        }
+        return ans[n];  
+    }
+};
