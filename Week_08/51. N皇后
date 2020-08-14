@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int size = 0;
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> ans;
+        vector<string>nQueens(n, string(n, '.'));
+        size = (1 << n) - 1;
+        DFS(ans, nQueens, n, 0, 0, 0, 0);
+        return ans;
+    }
+    void DFS(vector<vector<string>>& ans, vector<string>& nQueens, int n, int row, int col, int ll, int lr) {
+        if (row == n) {
+            ans.push_back(nQueens);
+            return;
+        }
+        int pos = size & (~(col | ll | lr));
+        while (pos != 0) {
+            int p = pos & -pos;
+            pos &= pos - 1;
+            nQueens[row][log2(p)] = 'Q';
+            DFS(ans, nQueens, n, row + 1, col | p, (ll | p) << 1, (lr | p) >> 1);
+            nQueens[row][log2(p)] = '.';
+        }
+    }
+};
